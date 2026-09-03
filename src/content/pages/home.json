@@ -1,0 +1,82 @@
+{
+  "seo": {
+    "title": "Send a Friendly Hello | Say Hello",
+    "description": "Send a playful, bright hello that gives someone a tiny lift today."
+  },
+  "hero": {
+    "eyebrow": "A note for no reason at all",
+    "title": "A little hello goes a long way.",
+    "body": "Pick a person, write a few warm words, and send a small bright spot their way.",
+    "recipientLabel": "To",
+    "recipientPlaceholder": "Someone you’d like to surprise",
+    "messageLabel": "Your hello",
+    "messagePlaceholder": "Hey! Just wanted you to know I’m cheering for you today.",
+    "sendLabel": "Send a hello",
+    "templates": [
+      {
+        "text": "You popped into my head today.",
+        "id": "mWQPB7dVt4O3bF6PsKWj0"
+      },
+      {
+        "text": "Sending a pocket-sized cheer.",
+        "id": "DqPkTYIFZ0oN1wzueej2H"
+      },
+      {
+        "text": "You make the ordinary feel golden.",
+        "id": "r9gp8MjJCxI49OxyjbdgA"
+      }
+    ]
+  },
+  "steps": {
+    "title": "Three tiny steps. One happy inbox.",
+    "items": [
+      {
+        "number": "01",
+        "title": "Write it",
+        "body": "Start with a thought, a memory, or a quick little cheer.",
+        "id": "FyJFdzJ6QZnDv3lDKVVXW"
+      },
+      {
+        "number": "02",
+        "title": "Make it yours",
+        "body": "Choose a prompt and add the bit only you would say.",
+        "id": "TFyYdQGxORPFqCzIQEwTN"
+      },
+      {
+        "number": "03",
+        "title": "Send it along",
+        "body": "Off it goes — a small surprise for a regular day.",
+        "id": "vl68UHUScDfYBiB8otSND"
+      }
+    ]
+  },
+  "notes": {
+    "eyebrow": "A few ready-to-send sparks",
+    "title": "Start with a little nudge",
+    "items": [
+      {
+        "label": "For a friend",
+        "message": "Your friendship is a really good place to be.",
+        "color": "coral",
+        "id": "VYhWJXnpQ66zIKQmGdSmE"
+      },
+      {
+        "label": "For their big day",
+        "message": "Look at you go. I’m wildly proud of you.",
+        "color": "yellow",
+        "id": "nA5ruJkafhxIjfx4gL0E5"
+      },
+      {
+        "label": "Just because",
+        "message": "No news. Just a hello and a high five.",
+        "color": "blue",
+        "id": "W9q-dt5E5cY9qScPZRej8"
+      }
+    ]
+  },
+  "cta": {
+    "title": "Got someone in mind?",
+    "body": "Give their day a tiny sparkle. It only takes a hello.",
+    "button": "Write a bright spot"
+  }
+}

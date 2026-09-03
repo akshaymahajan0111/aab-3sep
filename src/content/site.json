@@ -1,0 +1,33 @@
+{
+  "brandName": "Say Hello",
+  "tagline": "Tiny notes. Brighter days.",
+  "navigation": [
+    {
+      "label": "How it works",
+      "href": "#how-it-works",
+      "id": "i4SNnC0bE5L9sYBjdQDUw"
+    },
+    {
+      "label": "Notes",
+      "href": "#notes",
+      "id": "o7sSYHhOt7jtg8oj8Sml2"
+    }
+  ],
+  "footerLinks": [
+    {
+      "label": "Start a note",
+      "href": "#send-hello",
+      "id": "ZbaMJFCGzN_R6tx_C-Q6M"
+    },
+    {
+      "label": "How it works",
+      "href": "#how-it-works",
+      "id": "qHHw3kcQqngNpbhwVuFRC"
+    },
+    {
+      "label": "Notes",
+      "href": "#notes",
+      "id": "z2c4EEp3Vsb5x1NtPtV3T"
+    }
+  ]
+}
