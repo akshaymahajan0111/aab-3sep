@@ -15,7 +15,7 @@ The Website layout provides the structural container for website pages. For most
 ```tsx
 import RootLayout from "./layouts/RootLayout";
 
-const router = createBrowserRouter([
+const routeTree: RouteObject[] = [
   {
     element: (
       <RootLayout>
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     ),
     children: routes,
   },
-]);
+];
 ```
 
 **Step 2: Create simple page components**

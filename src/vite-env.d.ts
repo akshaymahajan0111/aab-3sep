@@ -9,6 +9,8 @@ interface ImportMetaEnv {
   readonly VITE_API_URL: string
   readonly VITE_ENABLE_SOURCE_MAPPING: string
   readonly VITE_ENABLE_SSR: string
+  /** Unique site/app identifier set by the container runtime (local-control-plane sets SITE_ID). */
+  readonly SITE_ID: string | undefined
 }
 
 interface ImportMeta {

@@ -1,6 +1,7 @@
 import { RouteObject } from 'react-router';
 import { lazy } from 'react';
 import HomePage from './pages/index';
+import AuthPage from './pages/auth/AuthPage';
 // Eager import so renderToString doesn't hit a Suspense boundary on 404 routes
 // and abort to client rendering. The prod 404 page is tiny; the dev-tools
 // variant stays lazy because it pulls in dev-only code we don't want in
@@ -15,12 +16,21 @@ export const routes: RouteObject[] = [
     element: <HomePage />,
   },
   {
+    path: '/login',
+    element: <AuthPage mode="login" />,
+  },
+  {
+    path: '/signup',
+    element: <AuthPage mode="signup" />,
+  },
+  {
+    id: 'airo-not-found',
     path: '*',
     element: <NotFoundPage />,
   },
 ];
 
 // Types for type-safe navigation
-export type Path = '/';
+export type Path = '/' | '/login' | '/signup';
 
 export type Params = Record<string, string | undefined>;

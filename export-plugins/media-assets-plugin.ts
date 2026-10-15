@@ -9,6 +9,7 @@ import {
   ALLOWED_IMAGE_REDIRECT_HOSTS,
   ALLOWED_VIDEO_REDIRECT_HOSTS,
 } from './media-redirect-policy.js';
+import { parseSlotPath, resolveSlotTargetUrl } from './media-slot-selection.js';
 
 export const MANIFEST_FILENAME = 'airo-media.json';
 const IMAGE_PREFIX = '/airo-assets/images/';
@@ -99,45 +100,11 @@ export function isAllowedRedirectUrl(targetUrl: string, allowedHosts: ReadonlySe
   }
 }
 
-export function parseSlotPath(pathname: string, prefix: string): {
-  slotPath: string;
-  surfaceVariant: 'light' | 'dark' | null;
-} | null {
-  if (!pathname.startsWith(prefix)) return null;
-  const slotPath = pathname.slice(prefix.length);
-  if (!slotPath) return null;
-
-  if (slotPath.endsWith('/light')) {
-    return { slotPath: slotPath.slice(0, -'/light'.length), surfaceVariant: 'light' };
-  }
-  if (slotPath.endsWith('/dark')) {
-    return { slotPath: slotPath.slice(0, -'/dark'.length), surfaceVariant: 'dark' };
-  }
-
-  return { slotPath, surfaceVariant: null };
-}
-
-export function resolveSlotTargetUrl(
-  slot: MediaSlot,
-  surfaceVariant: 'light' | 'dark' | null,
-  srcParam: string | null,
-): string {
-  let targetUrl = slot.currentUrl ?? '';
-  if (surfaceVariant === 'light' && slot.lightSurfaceUrl) {
-    targetUrl = slot.lightSurfaceUrl;
-  } else if (surfaceVariant === 'dark' && slot.darkSurfaceUrl) {
-    targetUrl = slot.darkSurfaceUrl;
-  }
-
-  if (
-    srcParam &&
-    (slot.currentUrl === srcParam || (slot.alternatives ?? []).includes(srcParam))
-  ) {
-    targetUrl = srcParam;
-  }
-
-  return targetUrl;
-}
+// `parseSlotPath` / `resolveSlotTargetUrl` live in `./media-slot-selection.js` — a hand-authored
+// .js + .d.ts (like media-redirect-policy) that ships beside this plugin inside the export archive
+// and is imported by the agent's media-image tools too, so both resolve slot selectors identically.
+// Re-exported here (imported at the top) so this plugin's callers and tests keep their import path.
+export { parseSlotPath, resolveSlotTargetUrl };
 
 function contentTypeFor(filePath: string): string {
   return CONTENT_TYPES[path.extname(filePath).toLowerCase()] ?? 'application/octet-stream';

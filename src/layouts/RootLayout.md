@@ -26,7 +26,7 @@ RootLayout is the recommended way to create consistent multi-page **websites** (
 ```tsx
 // ✅ RootLayout is already applied in App.tsx (shown for reference — a pathless layout route)
 // src/App.tsx
-const router = createBrowserRouter([
+const routeTree: RouteObject[] = [
   {
     element: (
       <RootLayout>
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
     ),
     children: routes,
   },
-]);
+];
 
 // src/pages/home.tsx - Just content!
 export default function HomePage() {
@@ -180,7 +180,7 @@ const dashboardConfig = {
   },
 };
 
-const router = createBrowserRouter([
+const routeTree: RouteObject[] = [
   {
     path: "/",
     element: (
@@ -190,7 +190,7 @@ const router = createBrowserRouter([
     ),
     children: dashboardRoutes,
   },
-]);
+];
 ```
 
 ### Removing Header/Footer for Games or Fullscreen Apps
@@ -214,7 +214,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 For pages that need different layouts, you can create additional route groups:
 
 ```tsx
-const router = createBrowserRouter([
+const routeTree: RouteObject[] = [
   {
     // Pages with header/footer
     path: "/",
@@ -233,7 +233,7 @@ const router = createBrowserRouter([
     path: "/game",
     element: <GamePage />,
   },
-]);
+];
 ```
 
 ## Best Practices

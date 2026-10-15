@@ -16,48 +16,79 @@ export const schemas = {
   }),
   pages: {
     home: z.object({
-      "seo": z.object({
-        "title": z.string(),
-        "description": z.string()
+      "cta": z.object({
+        "body": z.string(),
+        "button": z.string(),
+        "title": z.string()
       }),
       "hero": z.object({
-        "eyebrow": z.string(),
-        "title": z.string(),
         "body": z.string(),
-        "recipientLabel": z.string(),
-        "recipientPlaceholder": z.string(),
+        "eyebrow": z.string(),
         "messageLabel": z.string(),
         "messagePlaceholder": z.string(),
+        "recipientLabel": z.string(),
+        "recipientPlaceholder": z.string(),
         "sendLabel": z.string(),
         "templates": z.array(z.object({
-          "text": z.string(),
-          "id": z.string()
-        }))
+          "id": z.string(),
+          "text": z.string()
+        })),
+        "title": z.string()
       }),
-      "steps": z.object({
+      "templateSection": z.object({
+        "eyebrow": z.string(),
         "title": z.string(),
-        "items": z.array(z.object({
-          "number": z.string(),
-          "title": z.string(),
-          "body": z.string(),
-          "id": z.string()
+        "subtitle": z.string(),
+        "categories": z.array(z.object({
+          "id": z.string(),
+          "label": z.string(),
+          "emoji": z.string(),
+          "templates": z.array(z.object({
+            "id": z.string(),
+            "text": z.string()
+          }))
         }))
       }),
       "notes": z.object({
         "eyebrow": z.string(),
-        "title": z.string(),
         "items": z.array(z.object({
-          "label": z.string(),
-          "message": z.string(),
           "color": z.string(),
-          "id": z.string()
-        }))
+          "id": z.string(),
+          "label": z.string(),
+          "message": z.string()
+        })),
+        "title": z.string()
       }),
-      "cta": z.object({
-        "title": z.string(),
-        "body": z.string(),
-        "button": z.string()
+      "seo": z.object({
+        "description": z.string(),
+        "title": z.string()
+      }),
+      "steps": z.object({
+        "items": z.array(z.object({
+          "body": z.string(),
+          "id": z.string(),
+          "number": z.string(),
+          "title": z.string()
+        })),
+        "title": z.string()
       })
+    }),
+    auth: z.object({
+      "login": z.object({
+        "title": z.string(),
+        "subtitle": z.string(),
+        "submitButton": z.string(),
+        "switchPrompt": z.string(),
+        "switchLink": z.string()
+      }),
+      "signup": z.object({
+        "title": z.string(),
+        "subtitle": z.string(),
+        "submitButton": z.string(),
+        "switchPrompt": z.string(),
+        "switchLink": z.string()
+      }),
+      "tagline": z.string()
     })
   }
 };

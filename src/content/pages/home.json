@@ -1,82 +1,227 @@
 {
-  "seo": {
-    "title": "Send a Friendly Hello | Say Hello",
-    "description": "Send a playful, bright hello that gives someone a tiny lift today."
+  "cta": {
+    "body": "Give their day a tiny sparkle. It only takes a hello.",
+    "button": "Write a bright spot",
+    "title": "Got someone in mind?"
   },
   "hero": {
-    "eyebrow": "A note for no reason at all haha",
-    "title": "A little hello goes a long way.",
     "body": "Pick a person, write a few warm words, and send a small bright spot their way.",
-    "recipientLabel": "To",
-    "recipientPlaceholder": "Someone you’d like to surprise",
+    "eyebrow": "A note for no reason at all",
     "messageLabel": "Your hello",
-    "messagePlaceholder": "Hey! Just wanted you to know I’m cheering for you today.",
+    "messagePlaceholder": "Hey! Just wanted you to know I'm cheering for you today.",
+    "recipientLabel": "To",
+    "recipientPlaceholder": "Someone you'd like to surprise",
     "sendLabel": "Send a hello",
     "templates": [
       {
-        "text": "You popped into my head today.",
-        "id": "mWQPB7dVt4O3bF6PsKWj0"
+        "id": "mWQPB7dVt4O3bF6PsKWj0",
+        "text": "You popped into my head today."
       },
       {
-        "text": "Sending a pocket-sized cheer.",
-        "id": "DqPkTYIFZ0oN1wzueej2H"
+        "id": "DqPkTYIFZ0oN1wzueej2H",
+        "text": "Sending a pocket-sized cheer."
       },
       {
-        "text": "You make the ordinary feel golden.",
-        "id": "r9gp8MjJCxI49OxyjbdgA"
+        "id": "r9gp8MjJCxI49OxyjbdgA",
+        "text": "You make the ordinary feel golden."
       }
-    ]
+    ],
+    "title": "A little hello goes a long way."
   },
-  "steps": {
-    "title": "Three tiny steps. One happy inbox.",
-    "items": [
+  "templateSection": {
+    "eyebrow": "Pick a vibe",
+    "title": "Ready-to-send hellos",
+    "subtitle": "Choose a mood, grab a line, and make it yours.",
+    "categories": [
       {
-        "number": "01",
-        "title": "Write it",
-        "body": "Start with a thought, a memory, or a quick little cheer.",
-        "id": "FyJFdzJ6QZnDv3lDKVVXW"
+        "id": "cat-just-because",
+        "label": "Just Because",
+        "emoji": "✨",
+        "templates": [
+          {
+            "id": "jb-1",
+            "text": "You popped into my head today. Hope that's okay."
+          },
+          {
+            "id": "jb-2",
+            "text": "No news. Just a hello and a high five."
+          },
+          {
+            "id": "jb-3",
+            "text": "Thinking of you for absolutely no reason at all."
+          },
+          {
+            "id": "jb-4",
+            "text": "You make the ordinary feel golden."
+          }
+        ]
       },
       {
-        "number": "02",
-        "title": "Make it yours",
-        "body": "Choose a prompt and add the bit only you would say.",
-        "id": "TFyYdQGxORPFqCzIQEwTN"
+        "id": "cat-cheer-up",
+        "label": "Cheer Up",
+        "emoji": "🌤",
+        "templates": [
+          {
+            "id": "cu-1",
+            "text": "Sending a pocket-sized cheer your way."
+          },
+          {
+            "id": "cu-2",
+            "text": "Rough patch? I'm in your corner, always."
+          },
+          {
+            "id": "cu-3",
+            "text": "This too shall pass — and I'll be here the whole time."
+          },
+          {
+            "id": "cu-4",
+            "text": "You're doing better than you think. Promise."
+          }
+        ]
       },
       {
-        "number": "03",
-        "title": "Send it along",
-        "body": "Off it goes — a small surprise for a regular day.",
-        "id": "vl68UHUScDfYBiB8otSND"
+        "id": "cat-proud",
+        "label": "Proud of You",
+        "emoji": "🎉",
+        "templates": [
+          {
+            "id": "pr-1",
+            "text": "Look at you go. I'm wildly proud of you."
+          },
+          {
+            "id": "pr-2",
+            "text": "You did the thing! The actual thing!"
+          },
+          {
+            "id": "pr-3",
+            "text": "I knew you had it in you. The world is catching up."
+          },
+          {
+            "id": "pr-4",
+            "text": "Quietly cheering from over here. You're incredible."
+          }
+        ]
+      },
+      {
+        "id": "cat-miss-you",
+        "label": "Miss You",
+        "emoji": "💌",
+        "templates": [
+          {
+            "id": "my-1",
+            "text": "Miss your face. That's all. Carry on."
+          },
+          {
+            "id": "my-2",
+            "text": "The group chat isn't the same without you."
+          },
+          {
+            "id": "my-3",
+            "text": "Randomly remembered that time we laughed until it hurt."
+          },
+          {
+            "id": "my-4",
+            "text": "When can we fix the distance between us?"
+          }
+        ]
+      },
+      {
+        "id": "cat-good-luck",
+        "label": "Good Luck",
+        "emoji": "🍀",
+        "templates": [
+          {
+            "id": "gl-1",
+            "text": "Today's your day. Go get it."
+          },
+          {
+            "id": "gl-2",
+            "text": "You've prepared for this. Trust yourself."
+          },
+          {
+            "id": "gl-3",
+            "text": "Rooting for you so hard right now."
+          },
+          {
+            "id": "gl-4",
+            "text": "Whatever happens, I'm proud of you for trying."
+          }
+        ]
+      },
+      {
+        "id": "cat-gratitude",
+        "label": "Thank You",
+        "emoji": "🌻",
+        "templates": [
+          {
+            "id": "ty-1",
+            "text": "You showed up when it mattered. Thank you."
+          },
+          {
+            "id": "ty-2",
+            "text": "I don't say it enough — you're a gem."
+          },
+          {
+            "id": "ty-3",
+            "text": "Your kindness has a longer reach than you know."
+          },
+          {
+            "id": "ty-4",
+            "text": "Grateful for you, full stop."
+          }
+        ]
       }
     ]
   },
   "notes": {
     "eyebrow": "A few ready-to-send sparks",
-    "title": "Start with a little nudge",
     "items": [
       {
-        "label": "For a friend",
-        "message": "Your friendship is a really good place to be.",
         "color": "coral",
-        "id": "VYhWJXnpQ66zIKQmGdSmE"
+        "id": "VYhWJXnpQ66zIKQmGdSmE",
+        "label": "For a friend",
+        "message": "Your friendship is a really good place to be."
       },
       {
-        "label": "For their big day",
-        "message": "Look at you go. I’m wildly proud of you.",
         "color": "yellow",
-        "id": "nA5ruJkafhxIjfx4gL0E5"
+        "id": "nA5ruJkafhxIjfx4gL0E5",
+        "label": "For their big day",
+        "message": "Look at you go. I'm wildly proud of you."
       },
       {
-        "label": "Just because",
-        "message": "No news. Just a hello and a high five.",
         "color": "blue",
-        "id": "W9q-dt5E5cY9qScPZRej8"
+        "id": "W9q-dt5E5cY9qScPZRej8",
+        "label": "Just because",
+        "message": "No news. Just a hello and a high five."
       }
-    ]
+    ],
+    "title": "Start with a little nudge"
   },
-  "cta": {
-    "title": "Got someone in mind?",
-    "body": "Give their day a tiny sparkle. It only takes a hello.",
-    "button": "Write a bright spot"
+  "seo": {
+    "description": "Send a playful, bright hello that gives someone a tiny lift today.",
+    "title": "Send a Friendly Hello | Say Hello"
+  },
+  "steps": {
+    "items": [
+      {
+        "body": "Start with a thought, a memory, or a quick little cheer.",
+        "id": "FyJFdzJ6QZnDv3lDKVVXW",
+        "number": "01",
+        "title": "Write it"
+      },
+      {
+        "body": "Choose a prompt and add the bit only you would say.",
+        "id": "TFyYdQGxORPFqCzIQEwTN",
+        "number": "02",
+        "title": "Make it yours"
+      },
+      {
+        "body": "Off it goes — a small surprise for a regular day.",
+        "id": "vl68UHUScDfYBiB8otSND",
+        "number": "03",
+        "title": "Send it along"
+      }
+    ],
+    "title": "Three tiny steps. One happy inbox."
   }
 }

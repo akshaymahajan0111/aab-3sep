@@ -63,6 +63,18 @@ export default {
   				foreground: 'hsl(var(--info-foreground))'
   			}
   		},
+		spacing: {
+			xs: 'var(--space-xs, 0.5rem)',
+			sm: 'var(--space-sm, 1rem)',
+			base: 'var(--space-base, 1.5rem)',
+			lg: 'var(--space-lg, 2rem)',
+			xl: 'var(--space-xl, 3rem)',
+			xxl: 'var(--space-xxl, 4rem)',
+			xxxl: 'var(--space-xxxl, 6rem)'
+		},
+		maxWidth: {
+			content: 'var(--width-content, 72rem)'
+		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

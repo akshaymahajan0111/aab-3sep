@@ -177,15 +177,18 @@
     var slotPath = video.getAttribute('data-slot') || extractSlotPath(video.src)
     if (!isImageSlot(slotPath)) return
 
-    var prevImg = video.previousElementSibling
-    var patchedImg = prevImg && prevImg.tagName === 'IMG' && prevImg.getAttribute('data-airo-video-patched')
-      ? prevImg
+    // The patched host can be an <img> (patchImg's upgrade) or a poster-only <video>
+    // (patchVideoPoster's upgrade below) — either can precede our injected sibling.
+    var prevHost = video.previousElementSibling
+    var patchedHost = prevHost && (prevHost.tagName === 'IMG' || prevHost.tagName === 'VIDEO') && prevHost.getAttribute('data-airo-video-patched')
+      ? prevHost
       : null
 
-    if (patchedImg || video.hasAttribute('data-airo-video')) {
-      if (patchedImg) {
-        patchedImg.removeAttribute('data-airo-video-patched')
-        patchedImg.style.display = ''
+    if (patchedHost || video.hasAttribute('data-airo-video')) {
+      if (patchedHost) {
+        patchedHost.removeAttribute('data-airo-video-patched')
+        patchedHost.style.display = ''
+        if (patchedHost.tagName === 'VIDEO') holdPosterPlayback(patchedHost)
       }
       video.remove()
       return
@@ -201,6 +204,144 @@
     if (video.parentNode) video.parentNode.replaceChild(img, video)
   }
 
+  // Show the poster instead of an autoplaying frame. Leave src and <source> in
+  // place so controls can still play them. Mirrors dev-tools holdPosterPlayback.
+  function holdPosterPlayback(video) {
+    if (video.hasAttribute('data-airo-poster-hold')) return
+    if (video.hasAttribute('autoplay') || video.autoplay) {
+      video.setAttribute('data-airo-preserved-autoplay', video.getAttribute('autoplay') || '')
+    }
+    video.setAttribute('data-airo-preserved-preload', video.getAttribute('preload') || '')
+    video.setAttribute('data-airo-poster-hold', '')
+    video.removeAttribute('autoplay')
+    video.autoplay = false
+    video.preload = 'none'
+    video.pause()
+    video.load()
+  }
+
+  // Put back the autoplay and preload a poster hold suspended.
+  function releasePosterPlayback(video) {
+    if (!video.hasAttribute('data-airo-poster-hold')) return
+    video.removeAttribute('data-airo-poster-hold')
+    var preload = video.getAttribute('data-airo-preserved-preload')
+    video.removeAttribute('data-airo-preserved-preload')
+    if (preload) video.setAttribute('preload', preload)
+    else video.removeAttribute('preload')
+    var restoreAutoplay = video.hasAttribute('data-airo-preserved-autoplay')
+    if (restoreAutoplay) {
+      video.setAttribute('autoplay', video.getAttribute('data-airo-preserved-autoplay') || '')
+      video.removeAttribute('data-airo-preserved-autoplay')
+      video.autoplay = true
+    }
+    if (restoreAutoplay && video.style.display !== 'none') video.load()
+  }
+
+  // Page load and observer passes must not pause an ordinary <video> that uses an
+  // image slot as its poster. A hold is started only when unpatchVideo reveals a
+  // host this script previously upgraded. This function only releases that hold
+  // once the poster is no longer an image slot.
+  function holdImagePoster(video) {
+    if (video.hasAttribute('data-airo-video')) return
+    if (video.hasAttribute('data-airo-bg-video')) return
+    if (video.hasAttribute('data-airo-media-preview')) return
+    var posterSlot = extractSlotPath(video.getAttribute('poster') || '')
+    var shouldHold = isImageSlot(posterSlot)
+    if (shouldHold) {
+      var ownSlot = video.getAttribute('data-slot') || extractSlotPath(video.getAttribute('src') || '')
+      if (ownSlot === posterSlot) shouldHold = false
+      var sources = video.querySelectorAll('source')
+      for (var i = 0; shouldHold && i < sources.length; i++) {
+        if (extractSlotPath(sources[i].getAttribute('src')) === posterSlot) shouldHold = false
+      }
+    }
+    if (!shouldHold) {
+      if (video.style.display === 'none') return
+      releasePosterPlayback(video)
+    }
+  }
+
+  // The video's own content already represents this slot (not a poster-only
+  // match) — nothing to insert. video.src is empty when playback comes from
+  // a <source> child, so those children count too.
+  function posterOwnContentMatches(video, posterSlot) {
+    var ownSlot = video.getAttribute('data-slot') || extractSlotPath(video.src)
+    if (ownSlot === posterSlot) return true
+    var sources = video.querySelectorAll('source')
+    for (var i = 0; i < sources.length; i++) {
+      if (extractSlotPath(sources[i].getAttribute('src')) === posterSlot) return true
+    }
+    return false
+  }
+
+  // Upgrade a poster-only video host (not one of our injected/background/preview
+  // nodes) to a video sibling if its poster's slot is mediaType 'video'. A host
+  // already patched for a different poster slot is retargeted to the current one.
+  function patchVideoPoster(video) {
+    if (video.hasAttribute('data-airo-video')) return
+    if (video.hasAttribute('data-airo-bg-video')) return
+    if (video.hasAttribute('data-airo-media-preview')) return
+
+    var posterSlot = extractSlotPath(video.getAttribute('poster') || '')
+    var ownMatches = posterOwnContentMatches(video, posterSlot)
+    var sibling = video.nextElementSibling
+    var injectedSibling = sibling && sibling.tagName === 'VIDEO' && sibling.hasAttribute('data-airo-video') ? sibling : null
+
+    if (video.getAttribute('data-airo-video-patched')) {
+      if (isVideoSlot(posterSlot) && !ownMatches && injectedSibling && injectedSibling.getAttribute('data-slot') === posterSlot) return
+      if (injectedSibling) injectedSibling.remove()
+      video.removeAttribute('data-airo-video-patched')
+      video.style.display = ''
+      // Mirrors dev-tools patchVideoPosterHost: revealing this host can resume its own
+      // (unrelated) autoplaying content, which must stay held while its poster slot is
+      // still an image — otherwise unpatchVideo's hold is the only path that applies it.
+      if (posterSlot && isImageSlot(posterSlot) && !ownMatches) holdPosterPlayback(video)
+    }
+
+    if (!isVideoSlot(posterSlot) || ownMatches) return
+
+    var parent = video.parentNode
+    if (!parent) return
+
+    // Drop only this host's injected video: its next sibling, or a remount leftover
+    // whose previous sibling is no longer a patched host. Another host's video in the
+    // same parent stays.
+    var child = parent.firstElementChild
+    while (child) {
+      var next = child.nextElementSibling
+      var previous = child.previousElementSibling
+      var ownedByPatchedHost = previous && previous.getAttribute('data-airo-video-patched')
+      if (
+        child !== video &&
+        child.tagName === 'VIDEO' &&
+        child.hasAttribute('data-airo-video') &&
+        child.getAttribute('data-slot') === posterSlot &&
+        !ownedByPatchedHost
+      ) {
+        child.remove()
+      }
+      child = next
+    }
+
+    var inserted = document.createElement('video')
+    inserted.className = video.className
+    inserted.style.cssText = video.style.cssText
+    if (video.width) inserted.width = video.width
+    if (video.height) inserted.height = video.height
+    inserted.setAttribute('data-airo-video', '')
+    inserted.setAttribute('data-slot', posterSlot)
+    configureAutoplayVideo(inserted)
+    inserted.src = SLOT_PREFIX_VIDEOS + posterSlot
+
+    parent.insertBefore(inserted, video.nextSibling)
+    video.setAttribute('data-airo-video-patched', 'true')
+    // The original keeps playing (possibly with audio) once hidden unless its
+    // playback is suspended first — mirrors dev-tools previewMediaSlot's
+    // video-poster-to-video branch, which holds the original before hiding it.
+    holdPosterPlayback(video)
+    video.style.display = 'none'
+  }
+
   function unpatchBgElement(el) {
     var slotPath = el.getAttribute('data-airo-video-bg-patched')
     if (!isImageSlot(slotPath)) return
@@ -213,6 +354,8 @@
 
   function patchAll() {
     document.querySelectorAll('video').forEach(unpatchVideo)
+    document.querySelectorAll('video').forEach(patchVideoPoster)
+    document.querySelectorAll('video').forEach(holdImagePoster)
     document.querySelectorAll('[data-airo-video-bg-patched]').forEach(unpatchBgElement)
     document.querySelectorAll('img').forEach(patchImg)
     // Check elements with inline background styles or already-patched elements
@@ -277,6 +420,22 @@
         for (var i = 0; i < mutations.length; i++) {
           var mutation = mutations[i]
           if (mutation.type === 'childList') {
+            if (mutation.target instanceof HTMLVideoElement) {
+              var sourceChildChanged = false
+              for (var a = 0; a < mutation.addedNodes.length && !sourceChildChanged; a++) {
+                if (mutation.addedNodes[a] instanceof HTMLSourceElement) sourceChildChanged = true
+              }
+              for (var r = 0; r < mutation.removedNodes.length && !sourceChildChanged; r++) {
+                if (mutation.removedNodes[r] instanceof HTMLSourceElement) sourceChildChanged = true
+              }
+              if (sourceChildChanged) {
+                // A <source> inserted, removed, or replaced under this video changes
+                // what its own content represents — reconcile the host, not just its
+                // own src/poster attributes.
+                patchVideoPoster(mutation.target)
+                holdImagePoster(mutation.target)
+              }
+            }
             var added = mutation.addedNodes
             for (var j = 0; j < added.length; j++) {
               var node = added[j]
@@ -284,17 +443,39 @@
                 patchImg(node)
               } else if (node instanceof HTMLVideoElement) {
                 unpatchVideo(node)
+                patchVideoPoster(node)
+                holdImagePoster(node)
               } else if (node instanceof HTMLElement) {
-                node.querySelectorAll('video').forEach(unpatchVideo)
+                node.querySelectorAll('video').forEach(function (v) {
+                  unpatchVideo(v)
+                  patchVideoPoster(v)
+                  holdImagePoster(v)
+                })
                 node.querySelectorAll('img').forEach(patchImg)
                 // Check added elements for background-image video slots
                 patchBgElement(node)
                 node.querySelectorAll('[style*="background"]').forEach(patchBgElement)
               }
             }
-          } else if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+          } else if (mutation.type === 'attributes' && (mutation.attributeName === 'style' || mutation.attributeName === 'poster' || mutation.attributeName === 'src' || mutation.attributeName === 'srcset')) {
             var target = mutation.target
-            if (target instanceof HTMLElement) {
+            if ((mutation.attributeName === 'poster' || mutation.attributeName === 'src') && target instanceof HTMLVideoElement) {
+              // The video's own content, not just its poster, decides whether it's a
+              // poster-only match — re-evaluate when that content's src changes too.
+              patchVideoPoster(target)
+              holdImagePoster(target)
+            } else if (
+              (mutation.attributeName === 'src' || mutation.attributeName === 'srcset') &&
+              target instanceof HTMLSourceElement
+            ) {
+              // A bare <video><source> (no <picture> wrapper — not supported by this
+              // script) reconciles via the video host its content represents.
+              var sourceVideo = target.closest('video')
+              if (sourceVideo) {
+                patchVideoPoster(sourceVideo)
+                holdImagePoster(sourceVideo)
+              }
+            } else if (target instanceof HTMLElement) {
               // Re-check: React may have re-rendered and set background-image back
               // Remove stale patch flag so patchBgElement re-evaluates
               if (target.getAttribute('data-airo-video-bg-patched')) {
@@ -317,7 +498,7 @@
         childList: true,
         subtree: true,
         attributes: true,
-        attributeFilter: ['style']
+        attributeFilter: ['style', 'poster', 'src', 'srcset']
       })
 
       // Re-fetch manifest periodically to pick up changes (dev mode only — HMR may not work due to CORS)

@@ -52,7 +52,7 @@ function apiDevPlugin(): Plugin {
  * which handles interop natively, so this transform is dev-only.
  */
 function ssrCjsCompatPlugin(): Plugin {
-  const CJS_PACKAGES: string[] = ["react-router-dom", "react-router"];
+  const CJS_PACKAGES: string[] = ["react-router", "react-router"];
 
   function rewriteNames(raw: string): string {
     return raw.
@@ -410,7 +410,7 @@ export default defineConfig(({ mode, isSsrBuild }) => ({
     host: process.env.HOST || "0.0.0.0",
     port: parseInt(process.env.PORT || "5173"),
     strictPort: !!process.env.PORT,
-    allowedHosts,
+    allowedHosts: true,
     cors: {
       origin: corsOrigins,
       credentials: true,

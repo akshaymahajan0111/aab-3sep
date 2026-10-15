@@ -16,19 +16,21 @@
  */
 
 export interface SeoRoute {
-	path: string;
-	changefreq?:
-		| "always"
-		| "hourly"
-		| "daily"
-		| "weekly"
-		| "monthly"
-		| "yearly"
-		| "never";
-	priority?: number;
-	lastmod?: string;
+  path: string;
+  changefreq?:
+    | "always"
+    | "hourly"
+    | "daily"
+    | "weekly"
+    | "monthly"
+    | "yearly"
+    | "never";
+  priority?: number;
+  lastmod?: string;
 }
 
 export const seoRoutes: SeoRoute[] = [
-	{ path: "/", changefreq: "weekly", priority: 1.0 },
+  { path: "/", changefreq: "weekly", priority: 1.0 },
+  { path: "/login", changefreq: "monthly", priority: 0.8 },
+  { path: "/signup", changefreq: "monthly", priority: 0.8 },
 ];
