@@ -71,7 +71,7 @@ export default function HomePage() {
                 <div className="flex items-start justify-between gap-4 border-b-2 border-dashed border-border pb-5">
                   <div>
                     <p className="font-heading text-3xl font-bold text-secondary">A fresh hello!</p>
-                    <p className="text-sm font-bold text-muted-foreground">Delivered with a little lift! 😊</p>
+                    <p className="text-sm font-bold text-muted-foreground">Delivered with a little lift! GH😊</p>
                   </div>
                   <Send className="text-primary" size={27} aria-hidden="true" />
                 </div>
